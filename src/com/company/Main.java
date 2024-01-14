@@ -58,13 +58,15 @@ public class Main {
 
         Scanner scanner = new Scanner(new File("file.txt"));
 
+        if (!options.contains("-а") && !options.contains("-a")) {
 
-        File oldFileString = new File(prefixOutFiles + "strings.txt");
-        File oldFileInt = new File(prefixOutFiles +"integers.txt");
-        File oldFileFloat = new File(prefixOutFiles +"floats.txt");
-        oldFileString.delete();
-        oldFileInt.delete();
-        oldFileFloat.delete();
+            File oldFileString = new File(prefixOutFiles + "strings.txt");
+            File oldFileInt = new File(prefixOutFiles +"integers.txt");
+            File oldFileFloat = new File(prefixOutFiles +"floats.txt");
+            oldFileString.delete();
+            oldFileInt.delete();
+            oldFileFloat.delete();
+        }
 
         try {
 
