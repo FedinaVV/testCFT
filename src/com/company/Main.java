@@ -104,9 +104,49 @@ public class Main {
                 writerInt.close();
 
                 if (options.contains("-s")) {
-                    countInt = getLinesCount(pathToSaveFile + prefixOutFiles + "integers.txt");
+                    countInt = getLinesCount(pathToSaveFile + prefixOutFiles + "integers.txt").size();
                     System.out.println("Количество строк в файле integers: " + countInt);
                 }
+
+                if (options.contains("-f")) {
+                    if (!options.contains("-s")) {
+                        countInt = getLinesCount(pathToSaveFile + prefixOutFiles + "integers.txt").size();
+                        System.out.println("Количество строк в файле integers: " + countInt);
+                    }
+
+                    List<String> arrayOfString = getLinesCount(pathToSaveFile + prefixOutFiles + "integers.txt");
+                    List<Long> list = new ArrayList<>();
+
+                    for (String item : arrayOfString) {
+                        Long itemOfLong = Long.valueOf(item);
+                        list.add(itemOfLong);
+                    }
+
+                    long min = list.get(0);
+                    long max = list.get(0);
+                    long sum = 0;
+                    long average = 0;
+
+                    for (long item : list) {
+                        if (item < min) {
+                            min = item;
+                        }
+                        if (item > max) {
+                            max = item;
+                        }
+
+                        sum = sum + item;
+                    }
+
+                    average = sum / list.size();
+
+                    System.out.println("Минимальное значение в файле integers: " + min);
+                    System.out.println("Максимальное значение в файле integers: " + max);
+                    System.out.println("Сумма чисел в файле integers: " + sum);
+                    System.out.println("Среднее число в файле integers: " + average);
+
+                }
+
             }
 
             if (listOfFloat.size() > 0) {
@@ -121,9 +161,49 @@ public class Main {
                 writerFloat.close();
 
                 if (options.contains("-s")) {
-                    countFl = getLinesCount(pathToSaveFile + prefixOutFiles + "floats.txt");
+                    countFl = getLinesCount(pathToSaveFile + prefixOutFiles + "floats.txt").size();
                     System.out.println("Количество строк в файле floats: " + countFl);
                 }
+
+                if (options.contains("-f")) {
+                    if (!options.contains("-s")) {
+                        countFl = getLinesCount(pathToSaveFile + prefixOutFiles + "floats.txt").size();
+                        System.out.println("Количество строк в файле integers: " + countFl);
+                    }
+
+                    List<String> arrayOfString = getLinesCount(pathToSaveFile + prefixOutFiles + "floats.txt");
+                    List<Float> list = new ArrayList<>();
+
+                    for (String item : arrayOfString) {
+                        Float itemOfFloat = Float.valueOf(item);
+                        list.add(itemOfFloat);
+                    }
+
+                    float min = list.get(0);
+                    float max = list.get(0);
+                    float sum = 0;
+                    float average = 0;
+
+                    for (float item : list) {
+                        if (item < min) {
+                            min = item;
+                        }
+                        if (item > max) {
+                            max = item;
+                        }
+
+                        sum = sum + item;
+                    }
+
+                    average = sum / list.size();
+
+                    System.out.println("Минимальное значение в файле floats: " + min);
+                    System.out.println("Максимальное значение в файле floats: " + max);
+                    System.out.println("Сумма чисел в файле floats: " + sum);
+                    System.out.println("Среднее число в файле floats: " + average);
+
+                }
+
             }
 
             if (listOfString.size() > 0) {
@@ -138,9 +218,33 @@ public class Main {
                 writerString.close();
 
                 if (options.contains("-s")) {
-                    countSt = getLinesCount(pathToSaveFile + prefixOutFiles + "strings.txt");
+                    countSt = getLinesCount(pathToSaveFile + prefixOutFiles + "strings.txt").size();
                     System.out.println("Количество строк в файле strings: " + countSt);
                 }
+
+                if (options.contains("-f")) {
+                    if (!options.contains("-s")) {
+                        countSt = getLinesCount(pathToSaveFile + prefixOutFiles + "strings.txt").size();
+                        System.out.println("Количество строк в файле strings: " + countSt);
+                    }
+
+                    int longest = listOfString.get(0).length();
+                    int shortest = listOfString.get(0).length();
+
+                    for (String item : listOfString) {
+                        if (item.length() > longest) {
+                            longest = item.length();
+                        }
+
+                        if (item.length() < shortest) {
+                            shortest = item.length();
+                        }
+                    }
+
+                    System.out.println("Размер самой длинной строки: " + longest);
+                    System.out.println("Размер самой короткой строки: " + shortest);
+                }
+
             }
 
             scanner.close();
@@ -150,20 +254,23 @@ public class Main {
         }
     }
 
-    public static Integer getLinesCount(String path) {
+    public static List<String> getLinesCount(String path) {
 
-        int count = 0;
+        List<String> listOfString = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line = "";
+
+
             while ((line = reader.readLine()) != null) {
-                count++;
+                listOfString.add(line);
             }
+
+
+
         } catch (IOException e) {
             System.out.println("Ошибка при считывании строк в файле");
         }
-
-        return count;
+        return listOfString;
     }
-
 }
