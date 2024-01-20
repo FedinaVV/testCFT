@@ -15,61 +15,87 @@ public class Main {
 
         String pathToSaveFile = "";
         String prefixOutFiles = "";
-        List<String> options = new ArrayList<String>(Arrays.asList(args));
 
-        Scanner scanner = new Scanner(new File("file.txt"));
+        Scanner scanner;
 
-        List<Long> listOfLong = new ArrayList<>();
-        List<String> listOfString = new ArrayList<>();
-        List<Float> listOfFloat = new ArrayList<>();
+        List<String> options = new ArrayList<>(Arrays.asList(args));
 
-        if (options.contains("-o") || options.contains("-о")) {
-            pathToSaveFile = getPathForResults(options);
+        ArrayList<String> listFileNames = new ArrayList<>();
+
+
+        if (options.contains("-d")) {
+
+            for (int i = options.indexOf("-d") + 1; i < options.size(); i++) {
+                listFileNames.add(options.get(i));
+            }
+        } else {
+            listFileNames.add("file.txt");
         }
 
-        if (options.contains("-p") || options.contains("-р")) {
-            prefixOutFiles = getPrefixForResults(options);
-        }
+        for (String item : listFileNames) {
 
-        if (!options.contains("-а") && !options.contains("-a")) {
-            deleteOldFiles(prefixOutFiles);
-        }
+            List<Long> listOfLong = new ArrayList<>();
+            List<String> listOfString = new ArrayList<>();
+            List<Float> listOfFloat = new ArrayList<>();
 
-        try {
+            try {
+                scanner = new Scanner(new File(item));
 
-            while (scanner.hasNextLine()) {
-                String lineInFile = scanner.nextLine();
-
-                try {
-                    Long lineLong = Long.valueOf(lineInFile);
-                    listOfLong.add(lineLong);
-                    continue;
-                } catch (NumberFormatException e) {}
-
-                try {
-                    Float lineFloat = Float.valueOf(lineInFile);
-                    listOfFloat.add(lineFloat);
-                    continue;
-                } catch (NumberFormatException e) {}
-
-                listOfString.add(lineInFile);
-            }
-            scanner.close();
-
-            if (listOfLong.size() > 0) {
-                manageLongFile (options, pathToSaveFile, prefixOutFiles, listOfLong);
+            } catch (FileNotFoundException e) {
+                System.out.println("Не найден файл " + item + " для считывания!");
+                return;
             }
 
-            if (listOfFloat.size() > 0) {
-                manageFloatFile (options, pathToSaveFile, prefixOutFiles, listOfFloat);
+            if (options.contains("-o") || options.contains("-о")) {
+                pathToSaveFile = getPathForResults(options);
             }
 
-            if (listOfString.size() > 0) {
-                manageStringFile (options, pathToSaveFile, prefixOutFiles, listOfString);
+            if (options.contains("-p") || options.contains("-р")) {
+                prefixOutFiles = getPrefixForResults(options);
             }
 
-        } catch (IOException e) {
-            System.out.println("Возникла ошибка во время записи, проверьте данные.");
+            if (!options.contains("-а") && !options.contains("-a")) {
+                deleteOldFiles(prefixOutFiles);
+            }
+
+            try {
+
+                while (scanner.hasNextLine()) {
+                    String lineInFile = scanner.nextLine();
+
+                    try {
+                        Long lineLong = Long.valueOf(lineInFile);
+                        listOfLong.add(lineLong);
+                        continue;
+                    } catch (NumberFormatException e) {
+                    }
+
+                    try {
+                        Float lineFloat = Float.valueOf(lineInFile);
+                        listOfFloat.add(lineFloat);
+                        continue;
+                    } catch (NumberFormatException e) {
+                    }
+
+                    listOfString.add(lineInFile);
+                }
+                scanner.close();
+
+                if (listOfLong.size() > 0) {
+                    manageLongFile(options, pathToSaveFile, prefixOutFiles, listOfLong);
+                }
+
+                if (listOfFloat.size() > 0) {
+                    manageFloatFile(options, pathToSaveFile, prefixOutFiles, listOfFloat);
+                }
+
+                if (listOfString.size() > 0) {
+                    manageStringFile(options, pathToSaveFile, prefixOutFiles, listOfString);
+                }
+
+            } catch (IOException e) {
+                System.out.println("Возникла ошибка во время записи, проверьте данные.");
+            }
         }
     }
 
@@ -143,7 +169,7 @@ public class Main {
         oldFileFloat.delete();
     }
 
-    public static void manageFloatFile (List<String> options, String pathToSaveFile, String prefixOutFiles, List<Float> listOfFloat) throws IOException {
+    public static void manageFloatFile(List<String> options, String pathToSaveFile, String prefixOutFiles, List<Float> listOfFloat) throws IOException {
         int countFl = 0;
         FileWriter writerFloat = new FileWriter(pathToSaveFile + prefixOutFiles + "floats.txt", true);
 
@@ -293,6 +319,4 @@ public class Main {
             System.out.println("Размер самой короткой строки: " + shortest);
         }
     }
-
-
 }

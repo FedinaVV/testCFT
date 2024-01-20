@@ -1,0 +1,31 @@
+Пример входного файла in1.txt
+Lorem ipsum dolor sit amet
+45
+Пример 
+3.1415
+consectetur adipiscing
+-0.001
+тестовое задание 
+100500
+Пример входного файла in2.txt 
+Нормальная форма числа с плавающей запятой 
+1.5
+Long 
+123
+Пример запуска утилиты
+java -jar util.jar -s -a -p sample- in1.txt in2.txt
+sample-integers.txt
+45
+123
+100500
+sample-floats.txt
+1.52
+3.1415
+-0.001
+sample-strings.txt
+Lorem ipsum dolor sit amet
+Нормальная форма числа с плавающей запятой 
+Пример 
+Long 
+consectetur adipiscing
+тестовое задание
