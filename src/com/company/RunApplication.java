@@ -14,6 +14,7 @@ public class RunApplication {
 
     /**
      * Запускает приложение
+     *
      * @param options - переменные среды (опции)
      * @throws IOException Если возникла ошибка во время записи
      */
@@ -29,6 +30,19 @@ public class RunApplication {
         FileHandler fileHandler = new FileHandler();
 
         List<String> listFileNames = optionsHandler.getFileNames(options);
+        List<String> stringFileContent = new ArrayList<>();
+
+        if (options.contains("-o") || options.contains("-о")) {
+            pathToSaveFile = optionsHandler.getPathForResults(options);
+        }
+
+        if (options.contains("-p") || options.contains("-р")) {
+            prefixOutFiles = optionsHandler.getPrefixForResults(options);
+        }
+
+        if (!options.contains("-а") && !options.contains("-a")) {
+            fileHandler.deleteOldFiles(prefixOutFiles);
+        }
 
         for (String item : listFileNames) {
 
@@ -41,19 +55,7 @@ public class RunApplication {
 
             } catch (FileNotFoundException e) {
                 System.out.println("Не найден файл " + item + " для считывания!");
-                return;
-            }
-
-            if (options.contains("-o") || options.contains("-о")) {
-                pathToSaveFile = optionsHandler.getPathForResults(options);
-            }
-
-            if (options.contains("-p") || options.contains("-р")) {
-                prefixOutFiles = optionsHandler.getPrefixForResults(options);
-            }
-
-            if (!options.contains("-а") && !options.contains("-a")) {
-                fileHandler.deleteOldFiles(prefixOutFiles);
+                continue;
             }
 
             try {
@@ -80,20 +82,25 @@ public class RunApplication {
                 scanner.close();
 
                 if (listOfLong.size() > 0) {
-                    statisticHandler.printLongStatistic(options, pathToSaveFile, prefixOutFiles, listOfLong);
+                    fileHandler.writeLongOutFile(pathToSaveFile, prefixOutFiles, listOfLong);
                 }
 
                 if (listOfFloat.size() > 0) {
-                    statisticHandler.printFloatStatistic(options, pathToSaveFile, prefixOutFiles, listOfFloat);
+                    fileHandler.writeFloatOutFile(pathToSaveFile, prefixOutFiles, listOfFloat);
                 }
 
                 if (listOfString.size() > 0) {
-                    statisticHandler.printStringStatistic(options, pathToSaveFile, prefixOutFiles, listOfString);
+                    fileHandler.writeStringOutFile(pathToSaveFile, prefixOutFiles, listOfString);
+                    stringFileContent.addAll(listOfString);
                 }
 
             } catch (IOException e) {
                 System.out.println("Возникла ошибка во время записи, проверьте данные.");
             }
         }
+
+        statisticHandler.printFloatStatisticInConsoleFromFile(options, pathToSaveFile, prefixOutFiles);
+        statisticHandler.printLongStatisticInConsoleFromFile(options, pathToSaveFile, prefixOutFiles);
+        statisticHandler.printStringStatisticInConsoleFromFile(options, pathToSaveFile, prefixOutFiles, stringFileContent);
     }
 }

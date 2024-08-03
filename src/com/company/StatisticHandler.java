@@ -10,38 +10,25 @@ import java.util.List;
 public class StatisticHandler {
 
     /**
-     * Выводит статистику по данным типа float в консоль и в файл
+     * Выводит статистику по данным типа float в консоль
      * @param options - список параметров
      * @param pathToSaveFile - путь сохранения файла
      * @param prefixOutFiles - префикс имен выходных файлов
-     * @param listOfFloat - список данных типа float
-     * @throws IOException - если файл не удалось создать
      */
-    public void printFloatStatistic(List<String> options, String pathToSaveFile, String prefixOutFiles, List<Float> listOfFloat) throws IOException {
+    public void printFloatStatisticInConsoleFromFile(List<String> options, String pathToSaveFile, String prefixOutFiles) {
         int countFl = 0;
-
-        try (FileWriter writerFloat = new FileWriter(pathToSaveFile + prefixOutFiles + "floats.txt", true)) {
-            for (Float item : listOfFloat) {
-                writerFloat.write(item.toString());
-                writerFloat.write("\n");
-            }
-        } catch (IOException e) {
-            System.out.println("Не удалось записать данные типа float в файл");
-            e.printStackTrace();
-        }
-
         if (options.contains("-s")) {
-            countFl = getLinesCount(pathToSaveFile + prefixOutFiles + "floats.txt").size();
+            countFl = getLinesOfFile(pathToSaveFile + prefixOutFiles + "floats.txt").size();
             System.out.println("Количество строк в файле floats: " + countFl);
         }
 
         if (options.contains("-f")) {
             if (!options.contains("-s")) {
-                countFl = getLinesCount(pathToSaveFile + prefixOutFiles + "floats.txt").size();
+                countFl = getLinesOfFile(pathToSaveFile + prefixOutFiles + "floats.txt").size();
                 System.out.println("Количество строк в файле floats: " + countFl);
             }
 
-            List<String> arrayOfString = getLinesCount(pathToSaveFile + prefixOutFiles + "floats.txt");
+            List<String> arrayOfString = getLinesOfFile(pathToSaveFile + prefixOutFiles + "floats.txt");
             List<Float> list = new ArrayList<>();
 
             for (String item : arrayOfString) {
@@ -75,38 +62,25 @@ public class StatisticHandler {
     }
 
     /**
-     * Выводит статистику по данным типа long в консоль и в файл
+     * Выводит статистику по данным типа long в консоль
      * @param options - список параметров
      * @param pathToSaveFile - путь сохранения файла
      * @param prefixOutFiles - префикс имен выходных файлов
-     * @param listOfLong - список данных типа long
-     * @throws IOException - если файл не удалось создать
      */
-    public void printLongStatistic(List<String> options, String pathToSaveFile, String prefixOutFiles, List<Long> listOfLong) throws IOException {
+    public void printLongStatisticInConsoleFromFile(List<String> options, String pathToSaveFile, String prefixOutFiles) {
         int countInt = 0;
-
-        try ( FileWriter writerInt = new FileWriter(pathToSaveFile + prefixOutFiles + "integers.txt", true);) {
-            for (Long item : listOfLong) {
-                writerInt.write(item.toString());
-                writerInt.write("\n");
-            }
-        } catch (IOException e) {
-            System.out.println("Не удалось записать данные типа long в файл");
-            e.printStackTrace();
-        }
-
         if (options.contains("-s")) {
-            countInt = getLinesCount(pathToSaveFile + prefixOutFiles + "integers.txt").size();
+            countInt = getLinesOfFile(pathToSaveFile + prefixOutFiles + "integers.txt").size();
             System.out.println("Количество строк в файле integers: " + countInt);
         }
 
         if (options.contains("-f")) {
             if (!options.contains("-s")) {
-                countInt = getLinesCount(pathToSaveFile + prefixOutFiles + "integers.txt").size();
+                countInt = getLinesOfFile(pathToSaveFile + prefixOutFiles + "integers.txt").size();
                 System.out.println("Количество строк в файле integers: " + countInt);
             }
 
-            List<String> arrayOfString = getLinesCount(pathToSaveFile + prefixOutFiles + "integers.txt");
+            List<String> arrayOfString = getLinesOfFile(pathToSaveFile + prefixOutFiles + "integers.txt");
             List<Long> list = new ArrayList<>();
 
             for (String item : arrayOfString) {
@@ -140,34 +114,22 @@ public class StatisticHandler {
     }
 
     /**
-     * Выводит статистику по данным типа string в консоль и в файл
+     * Выводит статистику по данным типа string в консоль
      * @param options - список параметров
      * @param pathToSaveFile - путь сохранения файла
      * @param prefixOutFiles - префикс имен выходных файлов
      * @param listOfString - список данных типа string
-     * @throws IOException - если файл не удалось создать
      */
-    public void printStringStatistic(List<String> options, String pathToSaveFile, String prefixOutFiles, List<String> listOfString) throws IOException {
+    public void printStringStatisticInConsoleFromFile(List<String> options, String pathToSaveFile, String prefixOutFiles, List<String> listOfString) {
         int countSt = 0;
-
-        try(FileWriter writerString = new FileWriter(pathToSaveFile + prefixOutFiles + "strings.txt", true);) {
-            for (String item : listOfString) {
-                writerString.write(item);
-                writerString.write("\n");
-            }
-        } catch (IOException e) {
-            System.out.println("Не удалось записать данные типа string в файл");
-            e.printStackTrace();
-        }
-
         if (options.contains("-s")) {
-            countSt = getLinesCount(pathToSaveFile + prefixOutFiles + "strings.txt").size();
+            countSt = getLinesOfFile(pathToSaveFile + prefixOutFiles + "strings.txt").size();
             System.out.println("Количество строк в файле strings: " + countSt);
         }
 
         if (options.contains("-f")) {
             if (!options.contains("-s")) {
-                countSt = getLinesCount(pathToSaveFile + prefixOutFiles + "strings.txt").size();
+                countSt = getLinesOfFile(pathToSaveFile + prefixOutFiles + "strings.txt").size();
                 System.out.println("Количество строк в файле strings: " + countSt);
             }
 
@@ -190,11 +152,11 @@ public class StatisticHandler {
     }
 
     /**
-     * Возвращает количество строк в файле
-     * @param path - путь до входного файла
-     * @return - количество строк в файле
+     * Возвращает массив строк файла
+     * @param path - путь до файла
+     * @return - массив строк файла
      */
-    public List<String> getLinesCount(String path) {
+    public List<String> getLinesOfFile(String path) {
 
         List<String> listOfString = new ArrayList<>();
 
